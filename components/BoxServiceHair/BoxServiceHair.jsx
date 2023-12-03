@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, StyleSheet } from "react-native";
-
+import {Text, TouchableOpacity, StyleSheet, View} from "react-native";
+import {styles} from './styles'
 export default function BoxServiceHair({ data }) {
-    const { name, price, description } = data;
+    const { name, price, description, id} = data;
     const [sinal, set] = useState(false);
 
     return (
-        <TouchableOpacity
+        <TouchableOpacity key={id}
             style={styles.container}
             onPress={() => set((state) => !state)}
         >
@@ -16,28 +16,3 @@ export default function BoxServiceHair({ data }) {
         </TouchableOpacity>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-        backgroundColor: "#fff",
-        borderRadius: 8,
-        marginBottom: 10,
-        borderWidth: 1,
-        borderColor: "#ddd",
-    },
-    name: {
-        fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 5,
-    },
-    price: {
-        fontSize: 16,
-        color: "#666",
-        marginBottom: 5,
-    },
-    description: {
-        fontSize: 14,
-        color: "#333",
-    },
-});

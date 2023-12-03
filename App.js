@@ -4,6 +4,7 @@ import Login from "./screens/Login/Login";
 import Register from "./screens/Register/Register";
 import { SafeAreaView } from 'react-native';
 import Hub from "./screens/Hub/Hub";
+import ServiceHair from "./screens/ServiceHair/ServiceHair";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ export default function App() {
                     {/*<Stack.Screen options={{ headerShown: false }} name="Login" component={Login} />*/}
                     <Stack.Screen options={{ headerShown: false }} name="Hub" component={Hub} />
                     <Stack.Screen options={{ headerShown: false }} name="Register" component={Register} />
+                    <Stack.Screen options={{ headerShown: false }} name="Services" component={ServiceHair} />
                 </Stack.Navigator>
             </SafeAreaView>
         </NavigationContainer>
