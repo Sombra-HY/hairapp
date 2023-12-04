@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Button} from 'react-native';
+import {View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Button, Vibration} from 'react-native';
 
 import {Db, refAppointment, refOperation} from "../../Services/firebase";
 import { useDocs } from "../../hooks/useDocs";
@@ -74,7 +74,10 @@ const SectionAppointment = ({route}) => {
             }
         }
     }, [dat, dat2]);
-
+    const handleVibrate = () => {
+        // Faz o celular vibrar por 500 milissegundos
+        Vibration.vibrate(1000);
+    };
     const updatedoc = () => {
         const [hor, ] = presHOur.toString().split(":").map(Number);
         console.log(dat[0].data)
@@ -83,6 +86,7 @@ const SectionAppointment = ({route}) => {
         // const doca = dat[0].data.push({"date": {"day": presData, "hour ":hor , "minutes": 0, "month": new Date().getMonth(), "year": new Date().getFullYear()}, "service":route.params.service })
         const doca = {"date": {"day": presData, "hour ":hor , "minutes": 0, "month": new Date().getMonth(), "year": new Date().getFullYear()}, "service":route.params.serviceName };
         addToArray("8FmquPg71vrLfgRTEGFl","Appointment","data",doca);
+        handleVibrate()
         nav.navigate("Services",);
     }
 
@@ -132,7 +136,7 @@ const SectionAppointment = ({route}) => {
 
                     }
                     <Text>{presHOur + " horas no dia "+presData}</Text>
-                    {presHOur!==0 && <Button title={"agendar"} onPress={updatedoc}/>}
+                    {presHOur!==0 && <Button title={"agendar"} color={"#cd50ef"} styles={styles.cor} onPress={updatedoc}/>}
                 </View>
             </View>
         </>
@@ -175,6 +179,9 @@ const styles = StyleSheet.create({
     },
     dia:{
 
+    },
+    cor:{
+        backgroundColor: '#cd50ef',
     }
 });
 export const Data = ({ hora,act }) => {

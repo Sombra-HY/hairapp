@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {FlatList, View} from "react-native";
+import { FlatList, ScrollView, View, StyleSheet } from "react-native";
 import { refServices } from "../../Services/firebase";
 import BoxServiceHair from "../../components/BoxServiceHair/BoxServiceHair";
-import {  getDocs } from 'firebase/firestore';
-import {useDocs} from "../../hooks/useDocs";
+import { getDocs } from 'firebase/firestore';
+import { useDocs } from "../../hooks/useDocs";
 import EmptyHeader from "../../components/EmptyHeader/EmptyHeader";
 
 export default function ServiceHair() {
@@ -11,17 +11,28 @@ export default function ServiceHair() {
     console.log("foi");
 
     return (
-        <View>
-            <EmptyHeader/>
+        <>
+            <EmptyHeader />
+            <EmptyHeader />
             {services.length !== 0 && (
-
-                <FlatList
-                    Vertical
-                    data={services}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => <BoxServiceHair data={item} />}
-                />
+                <View style={styles.container}>
+                    <FlatList
+                        Vertical
+                        data={services}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => <BoxServiceHair data={item} />}
+                    />
+                </View>
             )}
-        </View>
+        </>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#f1e1f8', // Cor de fundo
+        paddingHorizontal: 16, // Espaçamento horizontal
+        paddingTop: 16, // Espaçamento superior
+    },
+});
