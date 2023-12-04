@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Button} from 'react-native';
-import EmptyHeader from "../../components/EmptyHeader/EmptyHeader";
-import { refAppointment, refOperation } from "../../Services/firebase";
+
+import {Db, refAppointment, refOperation} from "../../Services/firebase";
 import { useDocs } from "../../hooks/useDocs";
 import {useNavigation} from "@react-navigation/native";
+import {collection, doc, setDoc} from 'firebase/firestore'
+import {addToArray} from "../../Services/utils/dbFirebase";
+
 const SectionAppointment = ({route}) => {
     const [dat,setdat] = useDocs(refAppointment, true);
     const [dat2,] = useDocs(refOperation, true);
@@ -45,21 +48,22 @@ const SectionAppointment = ({route}) => {
             sethorafiltrada(horafilt);
 
             console.log("aaaa",dat[0].data)
-            function sameDay(i,value) {
-                for (const argument of dat[0].data) {
-                    if(argument.date.day === i ){
-                        const [h,] = value.split(":").map(Number);
-                        console.log(argument.date["hour "],h)
-                        if(h===argument.date["hour "]){
-                            console.log(h);
-                            return false
 
+            function sameDay(dayc,horasDisponivel) {
+                for (const apointment of dat[0].data) {
+                    const {day} = apointment.date;
+                    const hour = apointment.date["hour "];
+                    const [hora,] = horasDisponivel.split(":").map(Number);
+                    if (day===dayc){
+                        console.log("hor",hora,hour,day)
+                        if(hora===hour){
+                            return false
                         }
-                        return  true
+
                     }
-                    return true
+
                 }
-                return false;
+                return true
             }
 
             for (let i = new Date().getDate(); i <new Date().getDate()+7 ; i++) {
@@ -72,13 +76,14 @@ const SectionAppointment = ({route}) => {
     }, [dat, dat2]);
 
     const updatedoc = () => {
-        // const [hor, ] = presHOur.toString().split(":").map(Number);
-        // const a = setdat(
-        //     dat[dat.length-1]={"date": {"day": presData, "hour ": hor, "minutes": 0, "month": new Date().getMonth(), "year": new Date().getFullYear()}, "service": route.params}
-        //
-        // );
-        // console.log(route.params)
-        nav.navigate("Services");
+        const [hor, ] = presHOur.toString().split(":").map(Number);
+        console.log(dat[0].data)
+        console.log(route.params)
+        const docRef = doc(Db, "Appointment", "8FmquPg71vrLfgRTEGFl");
+        // const doca = dat[0].data.push({"date": {"day": presData, "hour ":hor , "minutes": 0, "month": new Date().getMonth(), "year": new Date().getFullYear()}, "service":route.params.service })
+        const doca = {"date": {"day": presData, "hour ":hor , "minutes": 0, "month": new Date().getMonth(), "year": new Date().getFullYear()}, "service":route.params.serviceName };
+        addToArray("8FmquPg71vrLfgRTEGFl","Appointment","data",doca);
+        nav.navigate("Services",);
     }
 
 
