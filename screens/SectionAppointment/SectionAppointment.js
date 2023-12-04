@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Button} from 'react-native';
 import EmptyHeader from "../../components/EmptyHeader/EmptyHeader";
 import { refAppointment, refOperation } from "../../Services/firebase";
 import { useDocs } from "../../hooks/useDocs";
-
-const SectionAppointment = () => {
-    const [dat,] = useDocs(refAppointment, true);
+import {useNavigation} from "@react-navigation/native";
+const SectionAppointment = ({route}) => {
+    const [dat,setdat] = useDocs(refAppointment, true);
     const [dat2,] = useDocs(refOperation, true);
     const [horafiltrada, sethorafiltrada] = useState([]);
     const [vef,] = useState(dat !== undefined && dat2 !== undefined);
@@ -16,7 +16,7 @@ const SectionAppointment = () => {
     const[presHOur,setpresHOur] = useState(Number);
 
     const[Listadayon,setListadayon] = useState({});
-
+    const nav =useNavigation();
 
 
     const hors = ["0:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00",
@@ -71,16 +71,25 @@ const SectionAppointment = () => {
         }
     }, [dat, dat2]);
 
+    const updatedoc = () => {
+        // const [hor, ] = presHOur.toString().split(":").map(Number);
+        // const a = setdat(
+        //     dat[dat.length-1]={"date": {"day": presData, "hour ": hor, "minutes": 0, "month": new Date().getMonth(), "year": new Date().getFullYear()}, "service": route.params}
+        //
+        // );
+        // console.log(route.params)
+        nav.navigate("Services");
+    }
+
+
     return (
         <>
-            <EmptyHeader />
-            <EmptyHeader />
             <View>
                 <View style={styles.main}>
                     {vef &&
                         <>
-                            <View>
-                                <Text style={styles.text}>Selecione a data</Text>
+                            <View style={styles.dia}>
+                                <Text style={styles.text}>Dias Disponiveis</Text>
                                 <FlatList
                                     horizontal
                                     data={array}
@@ -92,14 +101,12 @@ const SectionAppointment = () => {
                                 />
                             </View>
 
-                            <ScrollView>
 
-                            </ScrollView>
 
 
                                 {presData ===0?"":
-                                    <>
-                                        <Text style={styles.text}>Selecione o Horario</Text>
+                                    <View style={styles.hora}>
+                                        <Text style={styles.text}>Horario Disponiveis</Text>
 
                                         <FlatList
 
@@ -110,14 +117,17 @@ const SectionAppointment = () => {
                                             )}
                                             contentContainerStyle={styles.container2}
                                         />
-                                    </>
+                                    </View>
 
                                 }
 
 
 
                         </>
+
                     }
+                    <Text>{presHOur + " horas no dia "+presData}</Text>
+                    {presHOur!==0 && <Button title={"agendar"} onPress={updatedoc}/>}
                 </View>
             </View>
         </>
@@ -154,8 +164,13 @@ const styles = StyleSheet.create({
     main:{
         padding:10,
         height:450
-    }
+    },
+    hora:{
 
+    },
+    dia:{
+
+    }
 });
 export const Data = ({ hora,act }) => {
     const dayName = (hora) => {
@@ -180,7 +195,7 @@ export const Data = ({ hora,act }) => {
 
 export const Hour = ({hora,act}) => {
   return(
-      <TouchableOpacity  style={styles.box} onPress={()=> act}>
+      <TouchableOpacity  style={styles.box} onPress={()=> act(hora)}>
           <Text style={styles.text}> {hora} </Text>
       </TouchableOpacity>
   )

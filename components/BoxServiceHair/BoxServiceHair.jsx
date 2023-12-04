@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import {Text, TouchableOpacity, StyleSheet, View, Button} from "react-native";
-import {styles} from './styles'
+import { Text, TouchableOpacity, View, Button } from "react-native";
+import { styles } from './styles';
+import { useNavigation } from "@react-navigation/native";
+
 export default function BoxServiceHair({ data }) {
-    const { name, price, description, id} = data;
+    const { name, price, description, id } = data;
     const [sinal, set] = useState(false);
+    const navigation = useNavigation();
 
     return (
-        <TouchableOpacity key={id}
+        <TouchableOpacity
+            key={id}
             style={styles.container}
             onPress={() => set((state) => !state)}
         >
@@ -15,7 +19,10 @@ export default function BoxServiceHair({ data }) {
             {sinal &&
                 <>
                     <Text style={styles.description}>{description}</Text>
-                    <Button title={"Agendar"}/>
+                    <Button
+                        title={"Agendar"}
+                        onPress={() => navigation.navigate("Appointment", { serviceName: name })}
+                    />
                 </>
 
             }
