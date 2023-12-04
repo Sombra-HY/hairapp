@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Text, TouchableOpacity, StyleSheet, View} from "react-native";
+import {Text, TouchableOpacity, StyleSheet, View, Button} from "react-native";
 import {styles} from './styles'
 export default function BoxServiceHair({ data }) {
     const { name, price, description, id} = data;
@@ -12,7 +12,13 @@ export default function BoxServiceHair({ data }) {
         >
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.price}>{price}</Text>
-            {sinal && <Text style={styles.description}>{description}</Text>}
+            {sinal &&
+                <>
+                    <Text style={styles.description}>{description}</Text>
+                    <Button title={"Agendar"}/>
+                </>
+
+            }
         </TouchableOpacity>
     );
 }

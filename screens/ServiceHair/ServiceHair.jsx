@@ -4,6 +4,7 @@ import { refServices } from "../../Services/firebase";
 import BoxServiceHair from "../../components/BoxServiceHair/BoxServiceHair";
 import {  getDocs } from 'firebase/firestore';
 import {useDocs} from "../../hooks/useDocs";
+import EmptyHeader from "../../components/EmptyHeader/EmptyHeader";
 
 export default function ServiceHair() {
     const [services, setServices] = useDocs(refServices);
@@ -11,7 +12,9 @@ export default function ServiceHair() {
 
     return (
         <View>
+            <EmptyHeader/>
             {services.length !== 0 && (
+
                 <FlatList
                     Vertical
                     data={services}

@@ -47,7 +47,6 @@ export default function Hub() {
 
         >
             <Tab.Screen name="Home" component={BeautySchedule} />
-            <Tab.Screen name="Chat" component={Chat} />
             <Tab.Screen name="Settings" component={SettingsManager} />
         </Tab.Navigator>
     );
